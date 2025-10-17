@@ -1,6 +1,7 @@
 package fr.bck.barix.server;
 
 import fr.bck.barix.BarixConstants;
+import fr.bck.barix.api.BarixAPI;
 import fr.bck.barix.api.IBarixLagTracker;
 import fr.bck.barix.config.BarixServerConfig;
 import net.minecraft.resources.ResourceLocation;
@@ -31,6 +32,7 @@ public class LagMonitor implements IBarixLagTracker {
     @SubscribeEvent
     public static void onLevelTick(TickEvent.LevelTickEvent event) {
         if (event.level.isClientSide()) return;
+        if (!BarixServerConfig.LAG_MONITOR_ENABLED.get()) return;
         ServerLevel world = (ServerLevel) event.level;
 
         if (event.phase == TickEvent.Phase.START) {
@@ -44,7 +46,7 @@ public class LagMonitor implements IBarixLagTracker {
         long duration = System.nanoTime() - start;
         ResourceLocation id = world.dimension().location();
 
-        LagMonitor monitor = (LagMonitor) fr.bck.barix.api.BarixAPI.getLagTracker();
+        LagMonitor monitor = (LagMonitor) BarixAPI.getLagTracker();
         monitor.record(id, duration, world, "level");
 
         if (duration > (BarixServerConfig.LAG_MONITOR_THRESHOLD_MS.get() * 1_000_000L)) {

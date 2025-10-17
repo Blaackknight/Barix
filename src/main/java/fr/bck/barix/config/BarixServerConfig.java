@@ -2,11 +2,7 @@ package fr.bck.barix.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public final class BarixServerConfig {
 
@@ -62,7 +58,9 @@ public final class BarixServerConfig {
     public static final ForgeConfigSpec.BooleanValue ANTIXRAY_HIDE_SURFACE;
     public static final ForgeConfigSpec.IntValue ANTIXRAY_REVEAL_RADIUS;
 
+    // --- LAG MONITOR ---
     public static final ForgeConfigSpec.DoubleValue LAG_MONITOR_THRESHOLD_MS;
+    public static final ForgeConfigSpec.BooleanValue LAG_MONITOR_ENABLED;
 
     // Registre lisible: "section.key" -> valeur config
     private static final Map<String, ForgeConfigSpec.ConfigValue<?>> KEY_REGISTRY = new LinkedHashMap<>();
@@ -120,13 +118,14 @@ public final class BarixServerConfig {
         b.pop();
 
         b.push("antixray");
-        ANTIXRAY_ENABLE = b.define("enable", true);
+        ANTIXRAY_ENABLE = b.comment("Attention buguer actuellement !").define("enable", false);
         ANTIXRAY_HIDE_SURFACE = b.comment("Masquer les minerais exposés à l’air (false = ne pas masquer s’ils touchent l’air).").define("hide_surface", true);
         ANTIXRAY_REVEAL_RADIUS = b.comment("Rayon de révélation autour du joueur (blocs).").defineInRange("reveal_radius", 8, 1, 64);
         b.pop();
 
         b.push("lag_monitor");
-        LAG_MONITOR_THRESHOLD_MS = b.comment("Seuil de lag pour alerte (ms).").defineInRange("lag_threshold_ms", 100.0, 10.0, 9999.0);
+        LAG_MONITOR_THRESHOLD_MS = b.comment("Seuil de lag pour alerte (ms).").defineInRange("lag_threshold_ms", 30.0, 10.0, 9999.0);
+        LAG_MONITOR_ENABLED = b.define("enabled", false);
         b.pop();
 
         SPEC = b.build();
@@ -175,6 +174,7 @@ public final class BarixServerConfig {
         put("antixray.hide_surface", ANTIXRAY_HIDE_SURFACE);
         put("antixray.reveal_radius", ANTIXRAY_REVEAL_RADIUS);
 
+        put("lag_monitor.enabled", LAG_MONITOR_ENABLED);
         put("lag_monitor.lag_threshold_ms", LAG_MONITOR_THRESHOLD_MS);
     }
 
