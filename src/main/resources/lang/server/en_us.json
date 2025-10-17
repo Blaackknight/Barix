@@ -1,0 +1,18 @@
+{
+
+  "barix.ping.ok": "Pong!",
+  "barix.audit.enabled": "Barix audit: enabled",
+  "barix.audit.disabled": "Barix audit: disabled",
+  "barix.audit.window.set": "Barix audit window set to {0} ms",
+  "barix.audit.flag": "Barix audit {0} = {1}",
+  "barix.audit.entries_for": "Entries: {0} for {1}",
+  "barix.compress.triggered": "Compression started.",
+
+  "barix.lagscan.start": "Lag analysis started for {0} seconds...",
+  "barix.lagscan.title": "=== LagScan Results ===",
+  "barix.lagscan.line": "{0} -> {1} ms",
+  "barix.lagscan.end": "Lag analysis finished.",
+
+  "barix.alert.test": "This is a test alert.",
+  "barix.startup": "Barix server started ({0})."
+}
