@@ -1,18 +1,34 @@
 {
 
-  "barix.ping.ok": "Pong!",
-  "barix.audit.enabled": "Barix audit: enabled",
-  "barix.audit.disabled": "Barix audit: disabled",
-  "barix.audit.window.set": "Barix audit window set to {0} ms",
-  "barix.audit.flag": "Barix audit {0} = {1}",
-  "barix.audit.entries_for": "Entries: {0} for {1}",
-  "barix.compress.triggered": "Compression started.",
+  "barix.ping.ok": "§aPong!",
+  "barix.audit.enabled": "§aBarix audit: enabled",
+  "barix.audit.disabled": "§cBarix audit: disabled",
+  "barix.audit.window.set": "§eBarix audit window set to §6{0} §ems",
+  "barix.audit.flag": "§eBarix audit §7{0} = §6{1}",
+  "barix.audit.entries_for": "§7Entries: §6{0} §7for §6{1}",
+  "barix.compress.triggered": "§aCompression started.",
 
-  "barix.lagscan.start": "Lag analysis started for {0} seconds...",
-  "barix.lagscan.title": "=== LagScan Results ===",
-  "barix.lagscan.line": "{0} -> {1} ms",
-  "barix.lagscan.end": "Lag analysis finished.",
+  "barix.lagscan.start": "§eLag analysis started for §6{0} §eseconds...",
+  "barix.lagscan.title": "§6=== LagScan Results ===",
+  "barix.lagscan.line": "§7{0} -> §6{1} ms",
+  "barix.lagscan.end": "§aLag analysis finished.",
 
-  "barix.alert.test": "This is a test alert.",
-  "barix.startup": "Barix server started ({0})."
+  "barix.alert.test": "§cThis is a test alert.",
+  "barix.startup": "§aBarix server started (§6{0}§a).",
+
+  "barix.edicts.grant.user": "§aGranted edict '§6{0}§a' to §b{1}§a.",
+  "barix.edicts.revoke.user": "§eRevoked edict '§6{0}§e' for §b{1}§e.",
+  "barix.edicts.check.user": "§7Edict '§6{0}§7' for §b{1}§7: §a{2}.",
+
+  "barix.edicts.role.grant": "§aGranted edict '§6{0}§a' to role '§b{1}§a'.",
+  "barix.edicts.role.revoke": "§eRevoked edict '§6{0}§e' from role '§b{1}§e'.",
+  "barix.edicts.role.add": "§aAdded role '§6{0}§a' to §b{1}§a.",
+  "barix.edicts.role.remove": "§cRemoved role '§6{0}§c' from §b{1}§c.",
+
+  "barix.edicts.reloaded": "§aEdicts reloaded.",
+  "barix.edicts.saved": "§aEdicts saved.",
+
+  "barix.edicts.error.init": "§cFailed to initialize edicts store.",
+  "barix.edicts.error.read": "§cFailed to read edicts.json.",
+  "barix.edicts.error.write": "§cFailed to write edicts.json."
 }

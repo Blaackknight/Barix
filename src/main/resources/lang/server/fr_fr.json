@@ -1,18 +1,33 @@
 {
-  "barix.ping.ok": "Pong !",
-  "barix.audit.enabled": "Barix audit : activé",
-  "barix.audit.disabled": "Barix audit : désactivé",
-  "barix.audit.window.set": "Fenêtre d'audit réglée à {0} ms",
-  "barix.audit.flag": "Barix audit {0} = {1}",
-  "barix.audit.entries_for": "Entrées : {0} pour {1}",
-  "barix.compress.triggered": "Compression lancée.",
+  "barix.ping.ok": "§aPong !",
+  "barix.audit.enabled": "§aBarix audit : activé",
+  "barix.audit.disabled": "§cBarix audit : désactivé",
+  "barix.audit.window.set": "§eFenêtre d'audit réglée à §6{0} §ems",
+  "barix.audit.flag": "§eBarix audit §7{0} = §6{1}",
+  "barix.audit.entries_for": "§7Entrées : §6{0} §7pour §6{1}",
+  "barix.compress.triggered": "§aCompression lancée.",
 
-  "barix.lagscan.start": "Analyse du lag lancée pour {0} secondes…",
-  "barix.lagscan.title": "=== Résultats du LagScan ===",
-  "barix.lagscan.line": "{0} → {1} ms",
-  "barix.lagscan.end": "Fin de l’analyse.",
+  "barix.lagscan.start": "§eAnalyse du lag lancée pour §6{0} §esecondes…",
+  "barix.lagscan.title": "§6=== Résultats du LagScan ===",
+  "barix.lagscan.line": "§7{0} → §6{1} ms",
+  "barix.lagscan.end": "§aFin de l’analyse.",
 
-  "barix.alert.test": "Ceci est une alerte de test.",
-  "barix.startup": "Serveur Barix démarré ({0})."
+  "barix.alert.test": "§cCeci est une alerte de test.",
+  "barix.startup": "§aServeur Barix démarré (§6{0}§a).",
+
+  "barix.edicts.grant.user": "§aLe décret '§6{0}§a' a été accordé à §b{1}§a.",
+  "barix.edicts.revoke.user": "§eLe décret '§6{0}§e' a été révoqué pour §b{1}§e.",
+  "barix.edicts.check.user": "§7Décret '§6{0}§7' pour §b{1}§7 : §a{2}.",
+
+  "barix.edicts.role.grant": "§aLe décret '§6{0}§a' a été accordé au rôle '§b{1}§a'.",
+  "barix.edicts.role.revoke": "§eLe décret '§6{0}§e' a été révoqué du rôle '§b{1}§e'.",
+  "barix.edicts.role.add": "§aRôle '§6{0}§a' ajouté à §b{1}§a.",
+  "barix.edicts.role.remove": "§cRôle '§6{0}§c' retiré à §b{1}§c.",
+
+  "barix.edicts.reloaded": "§aDécrets rechargés.",
+  "barix.edicts.saved": "§aDécrets sauvegardés.",
+
+  "barix.edicts.error.init": "§cImpossible d'initialiser le stockage des décrets.",
+  "barix.edicts.error.read": "§cImpossible de lire edicts.json.",
+  "barix.edicts.error.write": "§cImpossible d'écrire edicts.json."
 }
-
