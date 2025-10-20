@@ -4,6 +4,7 @@ import fr.bck.barix.BarixConstants;
 import fr.bck.barix.api.BarixAPI;
 import fr.bck.barix.api.IBarixLagTracker;
 import fr.bck.barix.config.BarixServerConfig;
+import fr.bck.barix.lang.Lang;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent;
@@ -50,7 +51,7 @@ public class LagMonitor implements IBarixLagTracker {
         monitor.record(id, duration, world, "level");
 
         if (duration > (BarixServerConfig.LAG_MONITOR_THRESHOLD_MS.get() * 1_000_000L)) {
-            BarixConstants.log.warn("§dLagMonitor", "§6[§cLEVEL LAG§6] §b" + id + " §7took §d" + (duration / 1_000_000.0) + "§5ms");
+            BarixConstants.log.warn("§dLagMonitor", Lang.tr("barix.lagmonitor.level_lag", BarixServerConfig.CORE_LOCALE.get(), id, String.format("%.3f", (duration / 1_000_000.0))));
         }
     }
 

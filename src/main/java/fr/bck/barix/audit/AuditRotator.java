@@ -2,6 +2,7 @@ package fr.bck.barix.audit;
 
 import fr.bck.barix.BarixConstants;
 import fr.bck.barix.config.BarixServerConfig;
+import fr.bck.barix.lang.Lang;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -49,6 +50,6 @@ public final class AuditRotator {
     public static void compressTodayIfConfigured() {
         if (!BarixServerConfig.LOG_COMPRESS_ON_STOP.get()) return;
         compressNow(AuditJsonLog.currentFile());
-        BarixConstants.log.info("§5AuditRotator", "§aAudit §elog §7compressed on §cserver stop§7: {}", AuditJsonLog.currentFile().getFileName());
+        BarixConstants.log.info("§5AuditRotator", Lang.tr("barix.audit.compressed_on_stop", BarixServerConfig.CORE_LOCALE.get(), AuditJsonLog.currentFile().getFileName()));
     }
 }

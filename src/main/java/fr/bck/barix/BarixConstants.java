@@ -8,6 +8,33 @@ public final class BarixConstants {
 
     public static final String MODID = "barix";
 
+    // Charge BuildInfo par réflexion au runtime pour éviter la dépendance de compilation
+    private static String loadBuildInfo(String field, String def) {
+        try {
+            Class<?> c = Class.forName("fr.bck.barix.BuildInfo");
+            java.lang.reflect.Field f = c.getField(field);
+            Object v = f.get(null);
+            return v != null ? v.toString() : def;
+        } catch (Throwable t) {
+            return def;
+        }
+    }
+
+    // Ces champs permettent d'accéder facilement aux métadonnées de build via BarixConstants
+    public static final String MOD_VERSION = loadBuildInfo("VERSION", "unknown");
+    // BuildInfo.AUTHORS peut contenir plusieurs auteurs, on garde le nom AUTHOR pour compatibilité
+    public static final String AUTHOR = loadBuildInfo("AUTHORS", "unknown");
+    public static final String MOD_NAME = loadBuildInfo("MOD_NAME", "Barix");
+    public static final String MOD_ID = loadBuildInfo("MOD_ID", "barix"); // doit matcher MODID
+
+    public static final String MINECRAFT_VERSION = loadBuildInfo("MINECRAFT", "unknown");
+    public static final String FORGE_VERSION = loadBuildInfo("FORGE", "unknown");
+    public static final String MAPPINGS = loadBuildInfo("MAPPINGS", "unknown");
+    public static final String BUILD_TIME = loadBuildInfo("BUILD_TIME", "unknown");
+    public static final String GIT_BRANCH = loadBuildInfo("GIT_BRANCH", "unknown");
+    public static final String GIT_COMMIT = loadBuildInfo("GIT_COMMIT", "unknown");
+    public static final String GRADLE_VERSION = loadBuildInfo("GRADLE", "unknown");
+
     public static class log {
         private static final java.util.regex.Pattern MC = java.util.regex.Pattern.compile("§([0-9a-frlmnok])", java.util.regex.Pattern.CASE_INSENSITIVE);
         private static final String RESET = "\u001B[0m";

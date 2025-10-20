@@ -3,6 +3,8 @@ package fr.bck.barix.alert;
 import fr.bck.barix.BarixConstants;
 import fr.bck.barix.config.BarixServerConfig;
 import fr.bck.barix.infra.DiscordWebhook;
+import fr.bck.barix.lang.Lang;
+import fr.bck.barix.lang.LangKey;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,10 +29,10 @@ public final class DiscordAlerts {
 
         if (url == null || url.isBlank()) {
             webhook = null;
-            BarixConstants.log.info("§bAlerts", "§7Discord Alerts: §cdeactivated (missing webhook)");
+            BarixConstants.log.info("§bAlerts", Lang.tr(LangKey.BARIX_DISCORD_ALERT_DISABLED, "info"));
         } else {
             webhook = new DiscordWebhook(url, username);
-            BarixConstants.log.info("§bAlerts", "§7Discord Alerts: §aactivated");
+            BarixConstants.log.info("§bAlerts", Lang.tr(LangKey.BARIX_DISCORD_ALERT_ENABLED, "info"));
         }
     }
 
@@ -78,13 +80,13 @@ public final class DiscordAlerts {
                         }
                     }
                 } catch (Throwable t) {
-                    BarixConstants.log.error("§bAlerts", "§eIn-game §7sending §cerror (thread)", t);
+                    BarixConstants.log.error("§bAlerts", Lang.tr(LangKey.BARIX_DISCORD_ALERT_SENDING_ERROR_THREAD, "error"), t);
                 }
             });
             // Log console aussi
             BarixConstants.log.info("§bAlerts", message);
         } catch (Throwable t) {
-            BarixConstants.log.error("§bAlerts", "§eIn-game §7broadcast §cerror", t);
+            BarixConstants.log.error("§bAlerts", Lang.tr(LangKey.BARIX_DISCORD_ALERT_BROADCAST_ERROR, "error"), t);
         }
     }
 }

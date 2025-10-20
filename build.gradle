@@ -269,3 +269,118 @@ tasks.named('jar', Jar).configure {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
+
+def generatedDir = "$buildDir/generated/sources/buildInfo/java"
+
+tasks.register('generateBuildInfo') {
+    outputs.dir(generatedDir)
+    inputs.properties([
+            mod_id           : project.findProperty('mod_id') ?: '',
+            mod_name         : project.findProperty('mod_name') ?: '',
+            mod_version      : project.findProperty('mod_version') ?: '',
+            mod_authors      : project.findProperty('mod_authors') ?: '',
+            minecraft_version: project.findProperty('minecraft_version') ?: '',
+            forge_version    : project.findProperty('forge_version') ?: '',
+            mapping_channel  : project.findProperty('mapping_channel') ?: '',
+            mapping_version  : project.findProperty('mapping_version') ?: ''
+    ])
+
+    doLast {
+        def pkg = 'fr.bck.barix'
+        def outDir = file("$generatedDir/${pkg.replace('.', '/')}")
+        outDir.mkdirs()
+
+        def mappings  = "${project.findProperty('mapping_channel')}-${project.findProperty('mapping_version')}"
+        def buildTime = new Date().format("yyyy-MM-dd HH:mm:ssZ")
+        def gradleVer = gradle.gradleVersion
+
+        def git = { String... args ->
+            try {
+                def out = new ByteArrayOutputStream()
+                exec {
+                    commandLine 'git', *args
+                    standardOutput = out
+                    ignoreExitValue = true
+                    workingDir project.rootDir
+                }
+                def s = out.toString().trim()
+                return s ?: "unknown"
+            } catch (Exception ignored) { return "unknown" }
+        }
+        def gitBranch = git('rev-parse', '--abbrev-ref', 'HEAD')
+        def gitCommit = git('rev-parse', '--short', 'HEAD')
+
+        def f = file("$outDir/BuildInfo.java")
+        f.text = """package ${pkg};
+
+public final class BuildInfo {
+    public static final String MOD_ID = "${project.findProperty('mod_id')}";
+    public static final String MOD_NAME = "${project.findProperty('mod_name')}";
+    public static final String VERSION = "${project.findProperty('mod_version')}";
+    public static final String AUTHORS = "${project.findProperty('mod_authors')}";
+    public static final String MINECRAFT = "${project.findProperty('minecraft_version')}";
+    public static final String FORGE = "${project.findProperty('forge_version')}";
+    public static final String MAPPINGS = "${mappings}";
+    public static final String BUILD_TIME = "${buildTime}";
+    public static final String GIT_BRANCH = "${gitBranch}";
+    public static final String GIT_COMMIT = "${gitCommit}";
+    public static final String GRADLE = "${gradleVer}";
+    private BuildInfo() {}
+}
+"""
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir generatedDir
+        }
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn tasks.named('generateBuildInfo')
+}
+
+tasks.register('checkUpdateJson') {
+    group = 'verification'
+    description = 'Verifies that src/main/resources/update.json matches gradle.properties (mod_version, minecraft_version) and promos.'
+    doLast {
+        def modVer = project.findProperty('mod_version')
+        def mcVer = project.findProperty('minecraft_version')
+        if (!modVer || !mcVer) {
+            throw new GradleException("Missing mod_version or minecraft_version in gradle.properties")
+        }
+        def f = file('src/main/resources/update.json')
+        if (!f.exists()) throw new GradleException("update.json not found at src/main/resources/update.json")
+        def json = new groovy.json.JsonSlurper().parse(f)
+        def allow = (project.findProperty('allowMismatch') ?: 'false').toString().toBoolean()
+
+        // Check MC bucket exists
+        if (!json.containsKey(mcVer)) {
+            def msg = "update.json missing Minecraft bucket '${mcVer}'"
+            if (allow) { logger.warn(msg) } else { throw new GradleException(msg) }
+        } else {
+            // Check version entry exists in bucket
+            def bucket = json[mcVer] as Map
+            if (!bucket.containsKey(modVer)) {
+                def msg = "update.json missing version '${modVer}' under bucket '${mcVer}'"
+                if (allow) { logger.warn(msg) } else { throw new GradleException(msg) }
+            }
+        }
+        // Check promos
+        if (!json.containsKey('promos')) {
+            def msg = "update.json missing 'promos' section"
+            if (allow) { logger.warn(msg) } else { throw new GradleException(msg) }
+        } else {
+            def promos = json.promos as Map
+            def latestKey = "${mcVer}-latest"
+            if (promos[latestKey] != modVer) {
+                def msg = "promos['${latestKey}']='${promos[latestKey]}' does not match mod_version='${modVer}'"
+                if (allow) { logger.warn(msg) } else { throw new GradleException(msg) }
+            }
+        }
+        println "update.json OK for ${mcVer} / ${modVer}"
+    }
+}
